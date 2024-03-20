@@ -37,12 +37,41 @@ def main():
 
     run_model = RunModel.RunModel(epochs, device, train_loader, test_loader)
 
+    list_train_loss, list_train_accuracy, list_train_recall, list_train_precision, list_train_f1 = [], [], [], [], []
+    list_test_loss, list_test_accuracy, list_test_recall, list_test_precision, list_test_f1 = [], [], [], [], []
     for epoch in range(epochs):
         print(f"Epoch: {epoch}/{epochs}")
         train_running_loss, train_accuracy, train_recall, train_precision, train_f1 = run_model.train_model(model,
                                                                                                             criterion,
                                                                                                             optimizer)
         test_running_loss, test_accuracy, test_recall, test_precision, test_f1 = run_model.test_model(model, criterion)
+
+        list_train_loss.append(train_running_loss)
+        list_train_accuracy.append(train_accuracy)
+        list_train_recall.append(train_recall)
+        list_train_precision.append(train_precision)
+        list_train_f1.append(train_f1)
+
+        list_test_loss.append(test_running_loss)
+        list_test_accuracy.append(test_accuracy)
+        list_test_recall.append(test_recall)
+        list_test_precision.append(test_precision)
+        list_test_f1.append(test_f1)
+
+    lists = {
+        "train_loss": list_train_loss,
+        "train_accuracy": list_train_accuracy,
+        "train_recall": list_train_recall,
+        "train_precision": list_train_precision,
+        "train_f1": list_train_f1,
+        "test_loss": list_test_loss,
+        "test_accuracy": list_test_accuracy,
+        "test_recall": list_test_recall,
+        "test_precision": list_test_precision,
+        "test_f1": list_test_f1
+    }
+
+    utils.save_model_results(path_to_save, lists)
 
 
 if __name__ == '__main__':
